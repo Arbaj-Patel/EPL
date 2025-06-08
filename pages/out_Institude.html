@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Image Gallery</title>
+    <link rel="stylesheet" href="../styles/out_Institude.css">
+  </head>
+  <body>
+    <div class="container">
+      <!-- Images Section -->
+      <div class="images-section">
+        <div class="images-container">
+          <button class="scroll-button scroll-left" id="scrollLeft">‹</button>
+          <button class="scroll-button scroll-right" id="scrollRight">›</button>
+          <div class="images-scroll" id="imageScroll">
+            <!-- Add your images here with src attribute -->
+            <div class="image-item" onclick="openModal(this)">
+              <img
+                src="../images/image1.jpg"alt="1st pic"/>
+            </div>
+            <div class="image-item" onclick="openModal(this)">
+              <img
+                src="../images/image21.jpg"
+                alt="2nd pic"
+              />
+            </div>
+            <div class="image-item" onclick="openModal(this)">
+              <img src="../images/image3.JPG" alt="3rd pic" />
+            </div>
+            <div class="image-item" onclick="openModal(this)">
+              <img src="../images/image4.JPG" alt="4th pic" />
+            </div>
+            <div class="image-item" onclick="openModal(this)">
+              <img
+                src="../images/image1.jpg"
+                alt="1st pic(1)"
+              />
+            </div>
+            <!-- Add more image-item divs with your own image URLs -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Content Section -->
+      <div class="text-section">
+        <div class="text-content">
+          <h3>Company History Summary -</h3>
+          <p>
+            1. <i>Establishment Date:</i> The company was officially established
+            on <b>10th September 2021</b>, marking its entry into the industry.
+            This date signifies the beginning of a journey focused on innovation
+            and excellence. Since then, the company has steadily grown, building
+            a foundation of trust and performance
+          </p>
+          <p>
+            2. <i>Founder:</i> The visionary founders,
+            <b>Goraksh Dhakane and Ganesh Mhaske</b>, laid the cornerstone of
+            the company. Both individuals brought unique skills and a shared
+            passion for technology and education. Their leadership continues to
+            guide the company toward new achievements and impact.
+          </p>
+          <p>
+            3. <i>First Tie-up:</i> The first collaboration was formed with
+            <b>Samanyashastra pvt. on 12th December 2021</b>. This partnership
+            opened new avenues in project execution and talent development. It
+            also demonstrated the company’s potential to form meaningful
+            industry connections.
+          </p>
+          <p>
+            4. <i>Further Collaborations:</i> The company expanded its reach by
+            partnering with <b>Entavis Tech. Pvt. Ltd.</b>
+            This collaboration enabled the company to work on more complex and
+            tech-driven solutions. Such tie-ups have strengthened the company’s
+            network and professional ecosystem.
+          </p>
+          <p>
+            5. <i>Projects Undertaken:</i> Till date, the company has
+            successfully executed <b>5 major projects</b> across different
+            domains. These projects have showcased the team’s capabilities in
+            problem-solving and delivery. Each project added value to the
+            company’s portfolio and experience base.
+          </p>
+          <p>
+            6. <i>License Acquisition:</i> The company acquired its official
+            <b>license on 1st January 2023</b>, formalizing its operations. This
+            milestone brought greater credibility and expanded business
+            opportunities. With the license, the company can now legally scale
+            and serve a broader clientele.
+          </p>
+          <p>
+            7. <b><u>ISO Certification:</u></b>
+            On <b>15th March 2023</b>, the company achieved
+            <i><b>ISO certification</b></i
+            >, proving its quality standards. This certification signifies
+            compliance with international quality management practices. It has
+            boosted client confidence and validated the company’s operational
+            excellence.
+          </p>
+          <p>
+            8. <i>First Student Placement:</i> "The company achieved a proud
+            moment when the <b>first student was placed in 2022</b>. This
+            placement was a testament to the quality of training and mentorship
+            provided. <i><u>Since then, 22 out of 30 students have successfully
+            secured placements,</u></i> further reinforcing the effectiveness of the
+            company’s efforts. It also laid the groundwork for future student
+            success stories and increased trust in the brand."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for full-size image view -->
+    <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="" />
+      </div>
+    </div>
+
+    <script>
+      // Add smooth scrolling interaction
+      const imageScroll = document.getElementById("imageScroll");
+      const scrollLeftBtn = document.getElementById("scrollLeft");
+      const scrollRightBtn = document.getElementById("scrollRight");
+      let isScrolling = false;
+      let scrollTimeout;
+
+      // Scroll amount (adjusted for new image width)
+      const scrollAmount = imageScroll.clientWidth; // Full width of container
+
+      // Function to update button visibility
+      function updateButtonVisibility() {
+        const scrollLeft = imageScroll.scrollLeft;
+        const scrollWidth = imageScroll.scrollWidth;
+        const clientWidth = imageScroll.clientWidth;
+
+        // Hide left button when at the beginning
+        if (scrollLeft <= 0) {
+          scrollLeftBtn.style.display = "none";
+        } else {
+          scrollLeftBtn.style.display = "flex";
+        }
+
+        // Hide right button when at the end
+        if (scrollLeft + clientWidth >= scrollWidth - 1) {
+          scrollRightBtn.style.display = "none";
+        } else {
+          scrollRightBtn.style.display = "flex";
+        }
+      }
+
+      // Button click handlers
+      scrollLeftBtn.addEventListener("click", () => {
+        imageScroll.scrollBy({
+          left: -scrollAmount,
+          behavior: "smooth",
+        });
+        stopAutoScroll();
+        setTimeout(updateButtonVisibility, 300);
+      });
+
+      scrollRightBtn.addEventListener("click", () => {
+        imageScroll.scrollBy({
+          left: scrollAmount,
+          behavior: "smooth",
+        });
+        stopAutoScroll();
+        setTimeout(updateButtonVisibility, 300);
+      });
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          imageScroll.scrollBy({
+            left: -scrollAmount,
+            behavior: "smooth",
+          });
+          stopAutoScroll();
+          setTimeout(updateButtonVisibility, 300);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          imageScroll.scrollBy({
+            left: scrollAmount,
+            behavior: "smooth",
+          });
+          stopAutoScroll();
+          setTimeout(updateButtonVisibility, 300);
+        } else if (e.key === "Escape") {
+          closeModal();
+        }
+      });
+
+      // Mouse wheel horizontal scrolling
+      imageScroll.addEventListener("wheel", (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          const currentScrollAmount = imageScroll.clientWidth;
+          imageScroll.scrollBy({
+            left: e.deltaY > 0 ? currentScrollAmount : -currentScrollAmount,
+            behavior: "smooth",
+          });
+          stopAutoScroll();
+          setTimeout(updateButtonVisibility, 300);
+        }
+      });
+
+      // Auto-scroll functionality (disabled for single image view)
+      function startAutoScroll() {
+        // Auto-scroll disabled for single image view
+      }
+
+      function stopAutoScroll() {
+        // Auto-scroll disabled for single image view
+      }
+
+      // Mouse interaction
+      imageScroll.addEventListener("mouseenter", () => {
+        stopAutoScroll();
+      });
+
+      imageScroll.addEventListener("mouseleave", () => {
+        if (!isScrolling) {
+          setTimeout(startAutoScroll, 2000);
+        }
+      });
+
+      // Touch/scroll interaction
+      imageScroll.addEventListener("scroll", () => {
+        isScrolling = true;
+        stopAutoScroll();
+        updateButtonVisibility();
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+          startAutoScroll();
+        }, 3000);
+      });
+
+      // Initial button visibility check
+      updateButtonVisibility();
+
+      // Update button visibility on window resize
+      window.addEventListener("resize", updateButtonVisibility);
+
+      // Modal functionality
+      function openModal(imageItem) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const img = imageItem.querySelector("img");
+
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+
+        // Stop auto-scroll when modal is open
+        stopAutoScroll();
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("imageModal");
+        modal.style.display = "none";
+      }
+
+      // Close modal when clicking outside the image
+      window.addEventListener("click", (e) => {
+        const modal = document.getElementById("imageModal");
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Add click animation to image items
+      const imageItems = document.querySelectorAll(".image-item");
+      imageItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          this.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            this.style.transform = "";
+          }, 150);
+        });
+      });
+    </script>
+  </body>
+</html>
